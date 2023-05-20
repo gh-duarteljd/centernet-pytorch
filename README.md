@@ -3,15 +3,16 @@
 
 
 ## Table of contents
-1. [Top News]
-2. [Performance]
-3. [Required environment]
-4. [Precautions]
-5. [Download document]
-6. [Training steps]
-7. [Prediction step]
-8. [Evaluation step]
-9. [Reference]
+1. [Top News](#top-news)
+2. [Performance](#performance)
+3. [Required environment](#required-environment)
+4. [Precautions](#precautions)
+5. [Download document](#download-document)
+6. [Training steps](#training-steps)
+7. [Prediction step](#prediction-step)
+8. [Evaluation step](#evaluation-step)
+9. [Reference](#reference)
+
 
 ## Top News
 **`2022-04`**:** Substantial updates have been made, supporting step, cos learning rate drop method, adam, sgd optimizer selection, learning rate adaptive adjustment according to batch_size, and new image cropping. Support multi-GPU training, add the calculation of the number of targets of each type, and add heatmap. **
@@ -21,9 +22,10 @@ The original warehouse address in the BiliBili video is: https://github.com/xxxx
 
 ## Performance
 | training dataset | weight file name | test dataset | input image size | mAP 0.5:0.95 | mAP 0.5 |
-| :-----: | :-----: | :------: | :------: | :------: | :----- : |
-| VOC07+12 | [centernet_resnet50_voc.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_resnet50_voc.pth) | VOC-Test07 | 512x512 | - | 77.1
-| COCO-Train2017 | [centernet_hourglass_coco.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_hourglass_coco.pth) | COCO-Val2017 | 512x512 | 38.4 | 56.8
+| :-----: | :-----: | :------: | :------: | :------: | :-----: |
+| VOC07+12 | [centernet_resnet50_voc.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_resnet50_voc.pth) | VOC-Test07 | 512x512 | - | 77.1 |
+| COCO-Train2017 | [centernet_hourglass_coco.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_hourglass_coco.pth) | COCO-Val2017 | 512x512 | 38.4 | 56.8 |
+
 
 ## Required environment
 torch==1.2.0
@@ -169,7 +171,3 @@ img/street.jpg
 https://github.com/xuannianz/keras-CenterNet
 https://github.com/see--/keras-centernet
 https://github.com/xingyizhou/CenterNet
-
-[def]: #Notes
-[def2]: #
-[def3]: #Reference
