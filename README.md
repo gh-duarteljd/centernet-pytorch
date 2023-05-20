@@ -3,19 +3,19 @@
 
 
 ## Table of contents
-1. [Warehouse Update Top News](#warehouse update)
-2. [Performance situation Performance](#performance situation)
-3. [Required environment Environment](#Required environment)
-4. [Notes Attention](#Notes)
-5. [File Download Download](#File Download)
-6. [Training steps How2train](#training steps)
-7. [Prediction step How2predict](#prediction step)
-8. [Evaluation step How2eval](#Evaluation step)
-9. [Reference Material Reference](#Reference)
+1. [Top News]
+2. [Performance]
+3. [Required environment]
+4. [Precautions]
+5. [Download document]
+6. [Training steps]
+7. [Prediction step]
+8. [Evaluation step]
+9. [Reference]
 
 ## Top News
 **`2022-04`**:** Substantial updates have been made, supporting step, cos learning rate drop method, adam, sgd optimizer selection, learning rate adaptive adjustment according to batch_size, and new image cropping. Support multi-GPU training, add the calculation of the number of targets of each type, and add heatmap. **
-The original warehouse address in the BiliBili video is: https://github.com/bubbliiiiing/centernet-pytorch/tree/bilibili
+The original warehouse address in the BiliBili video is: https://github.com/xxxx/centernet-pytorch/tree/xxxx
 
 **`2021-10`**:** Substantial updates have been made, adding a large number of comments, adding a large number of adjustable parameters, modifying the components of the code, adding functions such as fps, video prediction, and batch prediction. **
 
@@ -25,7 +25,7 @@ The original warehouse address in the BiliBili video is: https://github.com/bubb
 | VOC07+12 | [centernet_resnet50_voc.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_resnet50_voc.pth) | VOC-Test07 | 512x512 | - | 77.1
 | COCO-Train2017 | [centernet_hourglass_coco.pth](https://github.com/bubbliiiiing/centernet-pytorch/releases/download/v1.0/centernet_hourglass_coco.pth) | COCO-Val2017 | 512x512 | 38.4 | 56.8
 
-## required environment
+## Required environment
 torch==1.2.0
 
 ## Precautions
@@ -34,7 +34,7 @@ The centernet_hourglass_coco.pth in the code is trained using the coco dataset.
 **Be careful not to use Chinese labels, and there should be no spaces in the folder! **
 **Before training, it is necessary to create a new txt document under model_data, enter the class to be classified in the document, and point classes_path to this file in train.py**.
 
-## Download Document 
+## Download document 
 The weights of centernet_resnet50_voc.pth, centernet_hourglass_coco.pth and backbone required for training can be downloaded from Baidu Netdisk.
 Link: https://pan.baidu.com/s/1YOQgpCiXPKiXC9Wgn6Kt0w
 Extraction code: 589g
@@ -169,3 +169,7 @@ img/street.jpg
 https://github.com/xuannianz/keras-CenterNet
 https://github.com/see--/keras-centernet
 https://github.com/xingyizhou/CenterNet
+
+[def]: #Notes
+[def2]: #
+[def3]: #Reference
