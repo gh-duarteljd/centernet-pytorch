@@ -10,67 +10,71 @@ from utils.utils_map import get_coco_map, get_map
 
 if __name__ == "__main__":
     '''
-    Unlike AP, Recall and Precision are an area concept. Therefore, when the threshold value (Confidence) is different, the Recall and Precision values ​​of the network are different.
-    By default, the Recall and Precision calculated by this code represent the corresponding Recall and Precision values when the threshold (Confidence) is 0.5.
+    Ao contrário do AP (Average Precision), Recall e Precision são conceitos de área. Portanto, quando o valor de limiar (Confidence) 
+    é diferente, os valores de Recall e Precision da rede são diferentes.
+    Por padrão, o Recall e Precision calculados por este código representam os valores correspondentes de Recall e Precision quando o 
+    limiar (Confidence) é 0,5.
 
-    Limited by the principle of mAP calculation, the network needs to obtain almost all prediction frames when calculating mAP, so that the Recall and Precision values under different threshold conditions can be calculated
-    Therefore, the number of txt boxes in map_out/detection-results/ obtained by this code is generally more than that of direct predict. The purpose is to list all possible prediction boxes.
+    Limitado pelo princípio de cálculo do mAP, a rede precisa obter quase todas as caixas de previsão ao calcular o mAP, para que os 
+    valores de Recall e Precision em diferentes condições de limiar possam ser calculados.
+    Portanto, o número de caixas txt em map_out/detection-results/ obtidas por este código é geralmente maior do que o da previsão direta. 
+    O objetivo é listar todas as possíveis caixas de previsão.
     '''
     #------------------------------------------------- -------------------------------------------------- ---------------#
-    # map_mode is used to specify what is calculated when the file is run
-    # map_mode is 0 to represent the entire map calculation process, including obtaining prediction results, obtaining real frames, and calculating VOC_map.
-    # map_mode is 1 to only get the prediction result.
-    # map_mode is 2 to only get the real frame.
-    # map_mode is 3 means only calculate VOC_map.
-    # map_mode is 4 to use the COCO toolbox to calculate the 0.50:0.95map of the current dataset. You need to get the prediction result, get the real frame and install pycocotools
+    # map_mode é usado para especificar o que é calculado quando o arquivo é executado
+    # map_mode é 0 para representar todo o processo de cálculo do mAP, incluindo obtenção dos resultados de previsão, obtenção das caixas reais e cálculo do VOC_map.
+    # map_mode é 1 para apenas obter o resultado de previsão.
+    # map_mode é 2 para apenas obter a caixa real.
+    # map_mode é 3 significa apenas calcular VOC_map.
+    # map_mode é 4 para usar a biblioteca COCO para calcular o mAP de 0,50:0,95 do conjunto de dados atual. É necessário obter o resultado de previsão, obter a caixa real e instalar o pycocotools
     #------------------------------------------------- -------------------------------------------------- ----------------#
     map_mode = 0
     #------------------------------------------------- --------------------------------------#
-    # The classes_path here is used to specify the category that needs to measure VOC_map
-    # Generally, it is consistent with the classes_path used for training and prediction
+    # O classes_path aqui é usado para especificar a categoria que precisa medir o VOC_map
+    # Geralmente, é consistente com o classes_path usado para treinamento e previsão
     #------------------------------------------------- --------------------------------------#
     classes_path = 'model_data/voc_classes.txt'
     #------------------------------------------------- --------------------------------------#
-    # MINOVERLAP is used to specify the mAP0.x you want to obtain, what is the meaning of mAP0.x, please Baidu.
-    # For example, to calculate mAP0.75, you can set MINOVERLAP = 0.75.
+    # MINOVERLAP é usado para especificar o mAP0.x que você deseja obter, qual é o significado de mAP0.x, por favor, pesquise.
+    # Por exemplo, para calcular o mAP0.75, você pode definir MINOVERLAP = 0.75.
     #
-    # When the overlap between a predicted frame and the real frame is greater than MINOVERLAP, the predicted frame is considered a positive sample, otherwise it is a negative sample.
-    # Therefore, the larger the value of MINOVERLAP, the more accurate the prediction frame must be predicted to be considered a positive sample. At this time, the calculated mAP value is lower.
+    # Quando a sobreposição entre uma caixa prevista e a caixa real é maior que MINOVERLAP, a caixa prevista é considerada uma amostra positiva, caso contrário, é uma amostra negativa.
+    # Portanto, quanto maior o valor de MINOVERLAP, mais precisa a caixa de previsão deve ser prevista para ser considerada uma amostra positiva. Nesse momento, o valor de mAP calculado é menor.
     #------------------------------------------------- --------------------------------------#
     MINOVERLAP = 0.5
     #------------------------------------------------- --------------------------------------#
-    # Limited by the principle of mAP calculation, the network needs to obtain almost all prediction frames when calculating mAP, so that mAP can be calculated
-    # Therefore, the value of confidence should be set as small as possible to obtain all possible prediction frames.
+    # Limitado pelo princípio de cálculo do mAP, a rede precisa obter quase todas as caixas de previsão ao calcular o mAP, para que o mAP possa ser calculado
+    # Portanto, o valor de confiança deve ser definido o mais baixo possível para obter todas as caixas de previsão possíveis.
     #
-    # This value is generally not adjusted. Because calculating mAP needs to obtain almost all the prediction boxes, the confidence here cannot be changed casually.
-    # To obtain the Recall and Precision values under different thresholds, please modify the score_threhold below.
+    # Esse valor geralmente não é ajustado. Como o cálculo do mAP precisa obter quase todas as caixas de previsão, a confiança aqui não pode ser alterada casualmente.
+    # Para obter os valores de Recall e Precision sob diferentes limiares, modifique o score_threhold abaixo.
     #------------------------------------------------- --------------------------------------#
     confidence = 0.02
     #------------------------------------------------- --------------------------------------#
-    # The size of the non-maximum suppression value used in prediction, the larger the non-maximum suppression, the less strict the non-maximum suppression.
+    # O tamanho do valor de supressão não máxima usado na previsão, quanto maior a supressão não máxima, menos rigorosa é a supressão não máxima.
     #
-    # This value is generally not adjusted.
+    # Esse valor geralmente não é ajustado.
     #------------------------------------------------- --------------------------------------#
     nms_iou = 0.5
     #------------------------------------------------- -------------------------------------------------- ------------#
-    # Recall and Precision are not an area concept like AP, so when the threshold value is different, the Recall and Precision values of the network are different.
+    # Recall e Precision não são um conceito de área como AP, portanto, quando o valor de limiar é diferente, os valores de Recall e Precision da rede são diferentes.
     #
-    # By default, the Recall and Precision calculated by this code represent the corresponding Recall and Precision values when the threshold value is 0.5 (here defined as score_threhold).
-    # Because the calculation of mAP needs to obtain almost all the prediction boxes, the confidence defined above cannot be changed casually.
-    # A score_threhold is specifically defined here to represent the threshold value, and then the Recall and Precision values corresponding to the threshold value are found when calculating mAP.
+    # Por padrão, o Recall e Precision calculados por este código representam os valores correspondentes de Recall e Precision quando o valor de limiar é 0,5 (aqui definido como score_threhold).
+    # Como o cálculo do mAP precisa obter quase todas as caixas de previsão, a confiança definida acima não pode ser alterada casualmente.
+    # Um score_threhold é definido especificamente aqui para representar o valor de limiar e, em seguida, são encontrados os valores de Recall e Precision correspondentes ao valor de limiar ao calcular o mAP.
     #------------------------------------------------- -------------------------------------------------- ------------#
     score_threhold = 0.5
     #------------------------------------------------- ------#
-    # map_vis is used to specify whether to enable the visualization of VOC_map calculation
+    # map_vis é usado para especificar se a visualização do cálculo do VOC_map está habilitada
     #------------------------------------------------- ------#
     map_vis = False
     #------------------------------------------------- ------#
-    # Point to the folder where the VOC dataset is located
-    # By default, it points to the VOC dataset in the root directory
+    # Aponta para a pasta onde o conjunto de dados VOC está localizado
+    # Por padrão, aponta para o conjunto de dados VOC no diretório raiz
     #------------------------------------------------- ------#
     VOCdevkit_path = 'VOCdevkit'
     #------------------------------------------------- ------#
-    # The output folder of the result, the default is map_out
+    # A pasta de saída do resultado, o padrão é map_out
     #------------------------------------------------- ------#
     map_out_path = 'map_out'
 
@@ -88,20 +92,20 @@ if __name__ == "__main__":
     class_names, _ = get_classes(classes_path)
 
     if map_mode == 0 or map_mode == 1:
-        print("Load model.")
+        print("Carregar modelo.")
         centernet = CenterNet(confidence = confidence, nms_iou = nms_iou)
-        print("Load model done.")
+        print("Modelo carregado.")
 
-        print("Get predict result.")
+        print("Obter resultado de previsão.")
         for image_id in tqdm(image_ids):
             image_path = os.path.join(VOCdevkit_path, "VOC2007/JPEGImages/"+image_id+".jpg")
             image = Image.open(image_path)
             if map_vis:
                 image.save(os.path.join(map_out_path, "images-optional/" + image_id + ".jpg"))
             centernet.get_map_txt(image_id, image, class_names, map_out_path)
-        print("Get predict result done.")
+        print("Resultado de previsão obtido.")
     if map_mode == 0 or map_mode == 2:
-        print("Get ground truth result.")
+        print("Obter resultado de referência.")
         for image_id in tqdm(image_ids):
             with open(os.path.join(map_out_path, "ground-truth/"+image_id+".txt"), "w") as new_f:
                 root = ET.parse(os.path.join(VOCdevkit_path, "VOC2007/Annotations/"+image_id+".xml")).getroot()
@@ -124,14 +128,14 @@ if __name__ == "__main__":
                         new_f.write("%s %s %s %s %s difficult\n" % (obj_name, left, top, right, bottom))
                     else:
                         new_f.write("%s %s %s %s %s\n" % (obj_name, left, top, right, bottom))
-        print("Get ground truth result done.")
+        print("Resultado de referência obtido.")
 
     if map_mode == 0 or map_mode == 3:
-        print("Get map.")
+        print("Obter VOC_map.")
         get_map(MINOVERLAP, True, score_threhold = score_threhold, path = map_out_path)
-        print("Get map done.")
+        print("VOC_map obtido.")
 
     if map_mode == 4:
-        print("Get map.")
+        print("Obter VOC_map.")
         get_coco_map(class_names = class_names, path = map_out_path)
-        print("Get map done.")
+        print("VOC_map obtido.")
